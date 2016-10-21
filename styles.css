@@ -54,6 +54,9 @@ body {
     left: 32vw;
     width: 500px;
 }
+#fist:hover {
+    fill: #156bde
+}
 ul {
     list-style-type: none;
 }
