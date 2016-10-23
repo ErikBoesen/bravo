@@ -37,7 +37,7 @@ for (i = 0; i < matches.length; i++) {
     for (j = 0; j < 3; i++) {
         console.log(event.matches[matches[i]]);
         var req = new XMLHttpRequest();
-        req.open('GET', 'https://www.thebluealliance.com/api/v2/team/' + event.matches[matches[i]].alliances.red.teams[j] + '?X-TBA-App-Id=frc1418:bravodisplay:v0.0.0', false);
+        req.open('GET', 'https://www.thebluealliance.com/api/v2/team/' + event.matches[matches[i]].alliances.red.teams[j] + '?X-TBA-App-Id=frc1418:bravo:v0.0.0', false);
         req.send();
         console.log(req.responseText);
         teams[j] = JSON.parse(req.responseText);
