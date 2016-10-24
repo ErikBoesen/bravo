@@ -6,25 +6,28 @@ def fetch(url)
     JSON.parse(Net::HTTP.get(URI.parse(url)))
 end
 
-event = {}
-loop do
-    print 'Enter event ID: '
-    event = fetch('https://www.thebluealliance.com/api/v2/event/' + gets.chomp + '/matches?X-TBA-App-Id=frc1418:bravo:v0.0.0')
-    if !event.Errors
-        puts 'That is not a valid event. Try again.'
-        break;
-    end
-end
+event = Array.new
+print 'Enter event ID: '
+event = fetch('https://www.thebluealliance.com/api/v2/event/' + gets.chomp + '/matches?X-TBA-App-Id=frc1418:bravo:v0.0.0')
+
+puts event
 
 print 'Enter team number to track: '
-teamNum = gets.chomp.to_i
+#teamNum = gets.chomp.to_i
+teamNum = 1319
 
-matches = []
+matches = Array.new
 
-event.matches.each do |i|
-    if event.matches[i].alliances.red.teams.include? 'frc1319' or event.matches[i].alliances.blue.teams.include? 'frc1319' then
+
+
+# TBA matches requests are returned as an array, the 0th element of which is a hash of the actual match data
+event[0].each do |i|
+=begin
+    puts event[0]
+    if event[0][i].alliances.red.teams.include? 'frc1319' or event[0][i].alliances.blue.teams.include? 'frc1319'
         matches.push(i)
     end
+=end
 end
 
 puts matches
