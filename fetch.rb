@@ -1,44 +1,47 @@
-require 'net/http'
-require 'uri'
+require 'tba'
 require 'json'
 
-def fetch(url)
-    JSON.parse(Net::HTTP.get(URI.parse(url)))
-end
+# Initialize TBA API
+tba = TBA.new('frc1418:bravo:v0.1.0')
 
-event = Array.new
 print 'Enter event ID: '
-event = fetch('https://www.thebluealliance.com/api/v2/event/' + gets.chomp + '/matches?X-TBA-App-Id=frc1418:bravo:v0.0.0')
-
-puts event
+# Recieve inputted event ID
+event_id = gets.chomp
+# Fetch event data from The Blue Alliance
+event = tba.get_event(event_id)
 
 print 'Enter team number to track: '
-#teamNum = gets.chomp.to_i
-teamNum = 1319
+# Take inputted team number and convert it to an integer
+team = gets.chomp.to_i
+# Fetch matches that the team is in at this competition
+matches = tba.get_team_matches(team, event_id)
 
-matches = Array.new
+# Make a new array to hold all the teams that played in those matches
+teams = Array.new
 
+# Go through each match and add all teams that played in those matches
+matches.each do |match|
+    # TODO: Dot notation?
 
-
-# TBA matches requests are returned as an array, the 0th element of which is a hash of the actual match data
-event[0].each do |i|
-=begin
-    puts event[0]
-    if event[0][i].alliances.red.teams.include? 'frc1319' or event[0][i].alliances.blue.teams.include? 'frc1319'
-        matches.push(i)
-    end
-=end
+    # Add red teams
+    teams += match['alliances']['red']['teams']
+    # Add blue teams
+    teams += match['alliances']['blue']['teams']
 end
 
-puts matches
+# Remove duplicate teams from array.
+teams.uniq!
 
-teams = []
+# Create a new hash to store data about the teams
+team_data = Hash.new
 
-matches.each do |i|
-    3.times do |j|
-        puts event.matches[matches[i]]
-        teams[j] = fetch('https://www.thebluealliance.com/api/v2/team/' + event.matches[matches[i]].alliances.red.teams[j] + '?X-TBA-App-Id=frc1418:bravo:v0.0.0');
-    end
+# Fetch the data for each team
+teams.each do |team|
+    # Create a new element containing the data of this team
+    # (Turn string form [i.e. 'frc1418'] into integer, i.e. 1418)
+    team_data[team] = tba.get_team(team[3..-1].to_i)
 end
 
-# TODO: Also gather data for Blue alliances.
+# Write team and match data into their respective files.
+File.write('data/teams.json', JSON.generate(team_data))
+File.write('data/matches.json', JSON.generate(matches))
