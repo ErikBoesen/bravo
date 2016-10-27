@@ -48,7 +48,7 @@ end
 puts "Storing data..."
 
 # Write team and match data into their respective files.
-File.write("public/data/teams.json", JSON.generate(team_data))
-File.write("public/data/matches.json", JSON.generate(matches))
+File.write("public/data/teams.json", JSON.pretty_generate(team_data))
+File.write("public/data/matches.json", JSON.pretty_generate(matches))
 
 puts "Done!"
