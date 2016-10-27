@@ -18,7 +18,7 @@ puts "Getting Team #{team}'s matches at event #{event_id}..."
 # Fetch matches that the team is in at this competition
 matches = tba.get_team_matches(team, event_id)
 
-puts "#{matches.length} matches fetched. Building team list..."
+puts "#{matches.length} matches fetched. Building team list... (this could take a while)"
 # Make a new array to hold all the teams that played in those matches
 teams = Array.new
 
@@ -45,11 +45,13 @@ teams.each do |team|
     team_data[team] = tba.get_team(team[3..-1].to_i)
 end
 
+# TODO: Move QF, SF, and F matches to the end of the list. Not necessary since they won't normally be available when the fetching is done, but would still be a nice idea.
+
 puts "Storing data..."
 
 # Write team and match data into their respective files.
 public = File.expand_path "../public", __FILE__
-File.write(public+"/data/teams.json", JSON.pretty_generate(team_data))
-File.write(public+"/data/matches.json", JSON.pretty_generate(matches))
+File.write(public + "/data/teams.json", JSON.pretty_generate(team_data))
+File.write(public + "/data/matches.json", JSON.pretty_generate(matches))
 
 puts "Done!"
