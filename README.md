@@ -30,14 +30,12 @@ Next, run:
 
 This will start a simple server from which to host the dashboard.
 
-Open up
+## View
+In your favorite browser, open:
 
     http://localhost:8000
 
-in your browser to view the dashboard.
-
-## View
-To view the dashboard, open `index.html` in your favorite browser.
+That's it! See you in competition.
 
 ## License
 Feel free to modify and use code under the terms of the [MIT License](LICENSE).
