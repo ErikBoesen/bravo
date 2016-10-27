@@ -43,5 +43,5 @@ teams.each do |team|
 end
 
 # Write team and match data into their respective files.
-File.write('data/teams.json', JSON.generate(team_data))
-File.write('data/matches.json', JSON.generate(matches))
+File.write('public/data/teams.json', JSON.generate(team_data))
+File.write('public/data/matches.json', JSON.generate(matches))

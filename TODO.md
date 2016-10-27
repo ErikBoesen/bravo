@@ -1,2 +1,4 @@
-# TODOs for Bravo
-* Make it use Ruby or something cool, not JavaScript because like half of our other software uses Node/Electron and Erik is very tired of it
+# TODOs for Bravo Pit Management System
+* More scouting system integration!
+* Online and offline modes
+* Increase resource efficiency

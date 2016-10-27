@@ -13,8 +13,10 @@
 body {
     font-family: 'Roboto', sans-serif;
     overflow: hidden;
+    -moz-osx-font-smoothing: greyscale;
+    -webkit-font-smoothing: antialiased;
 }
-.red, .blue {
+#red, #blue {
     position: absolute;
     top: 0;
     width: 30vw;
@@ -22,18 +24,18 @@ body {
     height: 100vh;
     color: white;
 }
-.red h1,
-.blue h1 {
+#red h1,
+#blue h1 {
     text-align: center;
     border-bottom: solid 2px white;
     padding-bottom: 10px;
     margin: 0 20px 10px;
 }
-.red {
+#red {
     left: 0;
     background: #d12727;
 }
-.blue {
+#blue {
     right: 0;
     background: #156bde;
 }
@@ -41,9 +43,11 @@ body {
     top: 0;
     right: 30vw;
     left: 30vw;
+    height: 100vh;
     padding: 50px;
     text-align: center;
-    color: #333;
+    background: #333;
+    color: white;
 }
 .match h1 {
     font-size: 50px;
@@ -53,9 +57,6 @@ body {
     bottom: -2px;
     left: 32vw;
     width: 500px;
-}
-#fist:hover {
-    fill: #156bde
 }
 ul {
     list-style-type: none;
