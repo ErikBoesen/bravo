@@ -48,7 +48,8 @@ end
 puts "Storing data..."
 
 # Write team and match data into their respective files.
-File.write("public/data/teams.json", JSON.generate(team_data))
-File.write("public/data/matches.json", JSON.generate(matches))
+public = File.expand_path "../public", __FILE__
+File.write(public+"/data/teams.json", JSON.generate(team_data))
+File.write(public+"/data/matches.json", JSON.generate(matches))
 
 puts "Done!"
