@@ -29,7 +29,7 @@ puts "Getting stats for event #{event_id}..."
 # Fetch the team's stats
 stats = tba.get_event_stats(event_id)
 
-puts "#{matches.length} matches fetched. Building team list... (this could take a while)"
+puts "#{matches.length} matches fetched and processed. Building team list... (this could take a while)"
 # Make a new array to hold all the teams that played in those matches
 teams = Array.new
 
