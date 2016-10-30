@@ -39,20 +39,36 @@ body {
     right: 0;
     background: #156bde;
 }
-.match {
+#match {
     top: 0;
     right: 30vw;
     left: 30vw;
     height: 100vh;
     padding: 50px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: #333;
     color: white;
 }
-.match h1 {
+#match h1 {
     font-size: 50px;
 }
-.match svg {
+.arrow {
+    width: 0;
+    height: 0;
+    margin: 20px;
+    border: solid 30px transparent;
+}
+.arrow#previous {
+    float: left;
+    border-right-color: #666;
+}
+.arrow#next {
+    float: right;
+    border-left-color: #666;
+}
+#match svg {
     position: absolute;
     bottom: -2px;
     left: 32vw;
