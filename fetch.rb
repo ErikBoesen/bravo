@@ -64,7 +64,7 @@ end
 # Combine qual matches with quarters, semis, and finals; but this time in order.
 matches += matches_qf + matches_sf + matches_f
 
-puts "#{matches.length} matches fetched and processes. Building team list... (this could take a while)"
+puts "#{matches.length} matches fetched and processed. Building team list... (this could take a while)"
 # Make a new array to hold all the teams that played in those matches
 teams = Array.new
 
@@ -86,9 +86,11 @@ team_data = Hash.new
 
 # Fetch the data for each team
 teams.each do |team|
+    print "Fetching data for #{team}..."
     # Create a new element containing the data of this team
     # (Turn string form [i.e. "frc1418"] into integer, i.e. 1418)
     team_data[team] = tba.get_team(team[3..-1].to_i)
+    puts "done."
 end
 
 puts "Storing data..."
@@ -98,4 +100,4 @@ public = File.expand_path "../public", __FILE__
 File.write(public + "/data/teams.json", JSON.pretty_generate(team_data))
 File.write(public + "/data/matches.json", JSON.pretty_generate(matches))
 
-puts "Done!"
+puts "Data saved, ready to run!"
