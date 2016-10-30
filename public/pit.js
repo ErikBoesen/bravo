@@ -26,6 +26,7 @@ getTeams.open('GET', 'data/teams.json', false);
 getTeams.send();
 var teams = JSON.parse(getTeams.responseText);
 
+// Fetch pregenerated team stats
 var getStats = new XMLHttpRequest();
 getStats.open('GET', 'data/stats.json', false);
 getStats.send();
