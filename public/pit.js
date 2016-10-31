@@ -26,6 +26,11 @@ getTeams.open('GET', 'data/teams.json', false);
 getTeams.send();
 var teams = JSON.parse(getTeams.responseText);
 
+var getStats = new XMLHttpRequest();
+getStats.open('GET', 'data/stats.json', false);
+getStats.send();
+var stats = JSON.parse(getStats.responseText);
+
 var currentMatch = 0;
 
 function render(match) {
@@ -35,6 +40,7 @@ function render(match) {
     blue = matches[match].alliances.blue.teams;
     blueData = [];
 
+    oprs = stats.oprs;
     // Go through the list and store that team's data in redData.
     for (i = 0; i < 3; i++) {
         redData[i] = teams[red[i]];
@@ -55,7 +61,7 @@ function render(match) {
             '<div>' +
                 '<h2>' + red[i] + '</h2>' +
                 '<ul>' +
-                    '<li>OPR: ??? Points</li>' +
+                    '<li>OPR: ' + oprs[red[i].substring(3)].toString().split('.')[0] + ' Points</li>' +
                     '<li>Location: ' + redData[i].location + '</li>' +
                 '</ul>' +
             '</div>';
@@ -63,7 +69,7 @@ function render(match) {
             '<div>' +
                 '<h2>' + blue[i] + '</h2>' +
                 '<ul>' +
-                    '<li>OPR: ??? Points</li>' +
+                  '<li>OPR: ' + oprs[blue[i].substring(3)].toString().split('.')[0] + ' Points</li>' +
                     '<li>Location: ' + blueData[i].location + '</li>' +
                 '</ul>' +
             '</div>';

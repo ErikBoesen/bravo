@@ -18,6 +18,11 @@ puts "Getting Team #{team}'s matches at event #{event_id}..."
 # Fetch matches that the team is in at this competition
 matches = tba.get_team_matches(team, event_id)
 
+puts "Getting stats for event #{event_id}..."
+# Fetch the team's stats
+stats = tba.get_event_stats(event_id)
+
+
 puts "#{matches.length} matches fetched. Building team list... (this could take a while)"
 # Make a new array to hold all the teams that played in those matches
 teams = Array.new
@@ -53,5 +58,6 @@ puts "Storing data..."
 public = File.expand_path "../public", __FILE__
 File.write(public + "/data/teams.json", JSON.pretty_generate(team_data))
 File.write(public + "/data/matches.json", JSON.pretty_generate(matches))
+File.write(public + "/data/stats.json", JSON.pretty_generate(stats))
 
 puts "Done!"
