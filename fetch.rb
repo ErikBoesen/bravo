@@ -19,7 +19,7 @@ puts "Getting Team #{team}'s matches at event #{event_id}..."
 matches = tba.get_team_matches(team, event_id)
 
 puts "Getting stats for event #{event_id}..."
-# Fetch matches that the team is in at this competition
+# Fetch the team's stats
 stats = tba.get_event_stats(event_id)
 
 
