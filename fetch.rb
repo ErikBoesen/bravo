@@ -19,52 +19,17 @@ puts "Getting Team #{team}'s matches at event #{event_id}..."
 # Fetch matches that the team is in at this competition
 matches = tba.get_team_matches(team, event_id)
 
-# TODO: There's almost certainly a better way to sort the array by match type.
-# This method feels very heavy and innefficient. Find a better system.
-# Perhaps something clever with matches.sort_by.
-
-# Create new arrays to hold elimination matches
-matches_qf = Array.new
-matches_sf = Array.new
-matches_f = Array.new
-
-# Create array to hold elimination match indices in match array
-matches_elim = Array.new
-
-# Go through the match list.
-matches.each_with_index do |match, i|
-    # If a match is a quarterfinal, semifinal, or final match,
-    # add it to the appropriate list and mark it for removal later on.
-    case match["comp_level"]
-        when "qf"
-            # Add to quarterfinal match list
-            matches_qf.push(match)
-            # Add index of match to list of indices we created above
-            matches_elim.push(i)
-        when "sf"
-            matches_sf.push(match)
-            matches_elim.push(i)
-        when "f"
-            matches_f.push(match)
-            matches_elim.push(i)
-    end
-end
-
-# Go backwards through the list of indices of elimination matches.
-matches_elim.reverse_each do |i|
-    # Remove each of them.
-    matches -= [matches[i]]
-end
-
-# Sort qualification matches by number.
+# Sort matches
 matches.sort_by! do |match|
-    match["match_number"]
+    # First sort by type of match, then by match number.
+    [["qm", "qf", "sf", "f"].find_index(match["comp_level"]), match["match_number"]]
 end
 
-# Combine qual matches with quarters, semis, and finals; but this time in order.
-matches += matches_qf + matches_sf + matches_f
+puts "Getting stats for event #{event_id}..."
+# Fetch the team's stats
+stats = tba.get_event_stats(event_id)
 
-puts "#{matches.length} matches fetched and processed. Building team list... (this could take a while)"
+puts "#{matches.length} matches fetched and processed. Building team list... (may take a while)"
 # Make a new array to hold all the teams that played in those matches
 teams = Array.new
 
@@ -99,5 +64,6 @@ puts "Storing data..."
 public = File.expand_path "../public", __FILE__
 File.write(public + "/data/teams.json", JSON.pretty_generate(team_data))
 File.write(public + "/data/matches.json", JSON.pretty_generate(matches))
+File.write(public + "/data/stats.json", JSON.pretty_generate(stats))
 
 puts "Data saved, ready to run!"

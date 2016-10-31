@@ -26,6 +26,12 @@ getTeams.open('GET', 'data/teams.json', false);
 getTeams.send();
 var teams = JSON.parse(getTeams.responseText);
 
+// Fetch pregenerated team stats
+var getStats = new XMLHttpRequest();
+getStats.open('GET', 'data/stats.json', false);
+getStats.send();
+var stats = JSON.parse(getStats.responseText);
+
 var currentMatch = 0;
 
 function render(match) {
@@ -35,6 +41,7 @@ function render(match) {
     blue = matches[match].alliances.blue.teams;
     blueData = [];
 
+    oprs = stats.oprs;
     // Go through the list and store that team's data in redData.
     for (i = 0; i < 3; i++) {
         redData[i] = teams[red[i]];
@@ -47,15 +54,15 @@ function render(match) {
     ui.panels.match.number.innerHTML = 'Match ' + matches[match].comp_level.toUpperCase() + matches[match].match_number;
     // Set the contents of the panels.
     // TODO: Use DOM manipulation methods instead of innerHTML (better security)
-    // TODO: Calculate OPRs and predicted scores.
-    ui.panels.red.innerHTML = '<h1>Predicted Score: ???</h1>';
-    ui.panels.blue.innerHTML = '<h1>Predicted Score: ???</h1>';
+    // TODO: Make this less messy.
+    ui.panels.red.innerHTML = '<h1>Predicted Score: ~' + (oprs[parseFloat(red[0].substring(3))] + oprs[parseFloat(red[1].substring(3))] + oprs[parseFloat(red[2].substring(3))]) + '</h1>';
+    ui.panels.blue.innerHTML = '<h1>Predicted Score: ~' + (oprs[parseFloat(blue[0].substring(3))] + oprs[parseFloat(blue[1].substring(3))] + oprs[parseFloat(blue[2].substring(3))]) + '</h1>';
     for (i = 0; i < 3; i++) {
         ui.panels.red.innerHTML +=
             '<div>' +
                 '<h2>' + red[i] + '</h2>' +
                 '<ul>' +
-                    '<li>OPR: ??? Points</li>' +
+                    '<li>OPR: ' + Math.round(oprs[parseFloat(red[i].substring(3))]) + ' Points</li>' +
                     '<li>Location: ' + redData[i].location + '</li>' +
                 '</ul>' +
             '</div>';
@@ -63,7 +70,7 @@ function render(match) {
             '<div>' +
                 '<h2>' + blue[i] + '</h2>' +
                 '<ul>' +
-                    '<li>OPR: ??? Points</li>' +
+                  '<li>OPR: ' + Math.round(oprs[parseFloat(blue[i].substring(3))]) + ' Points</li>' +
                     '<li>Location: ' + blueData[i].location + '</li>' +
                 '</ul>' +
             '</div>';
