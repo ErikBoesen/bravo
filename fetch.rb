@@ -26,7 +26,7 @@ matches.sort_by! do |match|
 end
 
 puts "Getting stats for event #{event_id}..."
-# Fetch matches that the team is in at this competition
+# Fetch the team's stats
 stats = tba.get_event_stats(event_id)
 
 puts "#{matches.length} matches fetched. Building team list... (this could take a while)"
