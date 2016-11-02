@@ -55,12 +55,12 @@ function render(match) {
     // Set the contents of the panels.
     // TODO: Use DOM manipulation methods instead of innerHTML (better security)
     // TODO: Make this less messy.
-    ui.panels.red.innerHTML = '<h1>Predicted Score: ~' + (oprs[parseFloat(red[0].substring(3))] + oprs[parseFloat(red[1].substring(3))] + oprs[parseFloat(red[2].substring(3))]) + '</h1>';
-    ui.panels.blue.innerHTML = '<h1>Predicted Score: ~' + (oprs[parseFloat(blue[0].substring(3))] + oprs[parseFloat(blue[1].substring(3))] + oprs[parseFloat(blue[2].substring(3))]) + '</h1>';
+    ui.panels.red.innerHTML = '<h1>Predicted Score: ~' + Math.round(oprs[parseFloat(red[0].substring(3))] + oprs[parseFloat(red[1].substring(3))] + oprs[parseFloat(red[2].substring(3))]) + '</h1>';
+    ui.panels.blue.innerHTML = '<h1>Predicted Score: ~' + Math.round(oprs[parseFloat(blue[0].substring(3))] + oprs[parseFloat(blue[1].substring(3))] + oprs[parseFloat(blue[2].substring(3))]) + '</h1>';
     for (i = 0; i < 3; i++) {
         ui.panels.red.innerHTML +=
             '<div>' +
-                '<h2>' + red[i] + '</h2>' +
+                '<h2>' + red[i].substring(3) + ' | ' + redData[i].nickname + '</h2>' +
                 '<ul>' +
                     '<li>OPR: ' + Math.round(oprs[parseFloat(red[i].substring(3))]) + ' Points</li>' +
                     '<li>Location: ' + redData[i].location + '</li>' +
@@ -68,7 +68,7 @@ function render(match) {
             '</div>';
         ui.panels.blue.innerHTML +=
             '<div>' +
-                '<h2>' + blue[i] + '</h2>' +
+                '<h2>' + blue[i].substring(3) + ' | ' + blueData[i].nickname + '</h2>' +
                 '<ul>' +
                   '<li>OPR: ' + Math.round(oprs[parseFloat(blue[i].substring(3))]) + ' Points</li>' +
                     '<li>Location: ' + blueData[i].location + '</li>' +
