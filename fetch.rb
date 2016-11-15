@@ -3,7 +3,7 @@ require "json"
 
 print "Enter team number to track: "
 # Take inputted team number and convert it to an integer
-team = gets.chomp.to_i
+team_num = gets.chomp.to_i
 
 # Initialize TBA API
 tba = TBA.new("frc#{team}:bravo:v0.1.0")
@@ -11,13 +11,11 @@ tba = TBA.new("frc#{team}:bravo:v0.1.0")
 print "Enter event ID: "
 # Recieve inputted event ID
 event_id = gets.chomp
-# Fetch event data from The Blue Alliance
-event = tba.get_event(event_id)
 
 
-puts "Getting Team #{team}'s matches at event #{event_id}..."
+puts "Getting Team #{team_num}'s matches at event #{event_id}..."
 # Fetch matches that the team is in at this competition
-matches = tba.get_team_matches(team, event_id)
+matches = tba.get_team_matches(team_num, event_id)
 
 # Sort matches
 matches.sort_by! do |match|
