@@ -1,72 +1,69 @@
 import tbapy
 import json
-from termcolor import colored as c
+import yaml
 
 
-# Take inputted team number and convert it to an integer
-track_team = int(input('Enter team number to track: '))
+def main():
+    # Load config
+    with open('config.yml', 'r') as f:
+        cfg = yaml.load(f)
 
-# Initialize TBA API
-tba = tbapy.TBA('frc1418:bravo:v0.2.0')
+    fetch(cfg['team'], cfg['event'], cfg['tba_token'])
 
-event_id = input('Enter event ID: ')
-# Recieve inputted event ID
-# Fetch event data from The Blue Alliance
-event = tba.event(event_id)
 
-print('Getting Team #%s\'s matches at event %s...' % (track_team, event_id))
-# Fetch matches that the team is in at this competition
-matches = tba.team_matches(track_team, event_id)
+def fetch(team, event, token):
+    """
+    Fetch and store TBA data for use on dashboard.
 
-# Sort matches
-matches = sorted(matches, key=lambda match: (
-    ['qm', 'qf', 'sf', 'f'].index(match['comp_level']), match['match_number']))
+    :param team: Team to tailor data to.
+    :param event: Key of event to get data on.
+    :param token: TBA token to use for fetching data.
+    """
+    # Initialize TBA API
+    tba = tbapy.TBA(token)
 
-print('Getting stats for event %s...' % event_id)
-# Fetch the team's stats
-stats = {}
+    print('Getting Team #{team}\'s matches at event {event}...'.format(team=team,
+                                                                       event=event))
+    # Fetch matches that the team is in at this competition
+    matches = tba.team_matches(team, event)
 
-for key in tba.event_stats(event_id):
-    stats[key] = tba.event_stats(event_id)
+    # Sort matches
+    matches = sorted(matches, key=lambda match: (['qm', 'qf', 'sf', 'f'].index(match.comp_level), match.match_number))
 
-print('%d matches fetched and processed. Building team list... (may take a while)' %
-      (len(matches)))
+    print('Getting stats for event {event}...'.format(event=event))
+    # Fetch the event's stats
+    stats = {'oprs': tba.event_oprs(event).oprs}
 
-# Make a new array to hold all the teams that played in those matches
-teams = []
-temp = []
-# Go through each match and add all teams that played in those matches
-for match in matches:
-    # Add red teams
-    teams.append(match['alliances']['red']['teams'])
-    # Add blue teams
-    teams.append(match['alliances']['blue']['teams'])
+    print('{num_matches} matches fetched and processed. Building team list... (may take a while)'.format(num_matches=len(matches)))
 
-# Flatten list and remove duplicates
-teams = list(set([team for alliance in teams for team in alliance]))
+    # Make a new array to hold all the teams that played in those matches
+    teams = [match.alliances['red']['team_keys'] + match.alliances['blue']['team_keys'] for match in matches]
+    # Flatten list and remove duplicates
+    teams = list(set([tm for alliance in teams for tm in alliance]))
+    # Create a new hash to store data about the teams
+    team_data = {}
 
-# Create a new hash to store data about the teams
-team_data = {}
+    # Fetch the data for each team
+    for tm in teams:
+        # Create a new element containing the data of this team
+        # (Turn string form [i.e. 'frc1418'] into integer, i.e. 1418)
+        team_data[tm] = int(tba.team(tm).team_number)
+        print('Data fetched for team {team}.'.format(team=tm[3:]))
 
-# Fetch the data for each team
-for team in teams:
-    # Create a new element containing the data of this team
-    # (Turn string form [i.e. 'frc1418'] into integer, i.e. 1418)
-    team_data[team] = int(tba.team(team)['team_number'])
-    print('Data fetched for team %s.' % (team[3:]))
+    print('Storing data...')
 
-print('Storing data...')
+    # Write team and match data into their respective files.
+    with open('public/data/teams.json', 'w+') as f:
+        json.dump(team_data, f)
+    with open('public/data/matches.json', 'w+') as f:
+        json.dump(matches, f)
+    with open('public/data/stats.json', 'w+') as f:
+        json.dump(stats, f)
 
-# Write team and match data into their respective files.
-with open('public/data/teams.json', 'w+') as f:
-    json.dump(team_data, f)
+    print('{num_matches} matches and {num_teams} teams fetched.'.format(num_matches=len(matches),
+                                                                        num_teams=len(teams)))
+    print('Data saved in directory public/data/.')
 
-with open('public/data/matches.json', 'w+') as f:
-    json.dump(matches, f)
 
-with open('public/data/stats.json', 'w+') as f:
-    json.dump(stats, f)
-
-print('%s matches and %s teams fetched.' % (len(matches), len(teams)))
-print('Tracking team %s, at event %s.' % (track_team, event_id))
-print('Data saved in directory public/data/.')
+if __name__ == '__main__':
+    main()

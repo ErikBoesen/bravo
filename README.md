@@ -4,8 +4,6 @@ Bravo is a live display for Team 1418's pit. It can:
 * Show data about upcoming matches
 * More features coming soon
 
-Bravo has not yet been used in competition but will be during the 2017 FIRST Steamworks season.
-
 ## Dependencies
 To install this application's dependencies, run
 
