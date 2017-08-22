@@ -20,18 +20,18 @@ This script will then ask for an event key (example: `2016cmp` for the 2016 cham
 
 Then, enter your team's number (for example, frc1418).
 
-The script will then fetch and store data about the matches your team will participate in at that event, and the teams that you will compete with and against. This data is stored in `public/data` in files called `matches.json` and `teams.json`.
+The script will then fetch and store data about the matches your team will participate in at that event, and the teams that you will compete with and against. This data is stored in `/app/static/data` in JSON files.
 
-Next, run:
+Next, from the `app` directory, run:
 
-    python3 -m http.server 8000
+    python3 app.py
 
 This will start a simple server from which to host the dashboard.
 
 ## View
 In your favorite browser, open:
 
-    http://localhost:8000
+    http://localhost:5000
 
 That's it! See you in competition.
 
