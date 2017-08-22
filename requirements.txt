@@ -1,1 +1,4 @@
 tbapy
+pyyaml
+flask
+flask-socketio

@@ -3,14 +3,6 @@ import json
 import yaml
 
 
-def main():
-    # Load config
-    with open('config.yml', 'r') as f:
-        cfg = yaml.load(f)
-
-    fetch(cfg['team'], cfg['event'], cfg['tba_token'])
-
-
 def fetch(team, event, token):
     """
     Fetch and store TBA data for use on dashboard.
@@ -53,17 +45,21 @@ def fetch(team, event, token):
     print('Storing data...')
 
     # Write team and match data into their respective files.
-    with open('public/data/teams.json', 'w+') as f:
+    with open('static/data/teams.json', 'w+') as f:
         json.dump(team_data, f)
-    with open('public/data/matches.json', 'w+') as f:
+    with open('static/data/matches.json', 'w+') as f:
         json.dump(matches, f)
-    with open('public/data/stats.json', 'w+') as f:
+    with open('static/data/stats.json', 'w+') as f:
         json.dump(stats, f)
 
     print('{num_matches} matches and {num_teams} teams fetched.'.format(num_matches=len(matches),
                                                                         num_teams=len(teams)))
-    print('Data saved in directory public/data/.')
+    print('Data saved in directory static/data/.')
 
 
 if __name__ == '__main__':
-    main()
+    # Load config
+    with open('config.yml', 'r') as f:
+        cfg = yaml.load(f)
+
+    fetch(cfg['team'], cfg['event'], cfg['tba_token'])

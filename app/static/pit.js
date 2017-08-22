@@ -16,19 +16,19 @@ var ui = {
 
 // Fetch pregenerated match data
 var getMatches = new XMLHttpRequest();
-getMatches.open('GET', 'data/matches.json', false);
+getMatches.open('GET', '/static/data/matches.json', false);
 getMatches.send();
 var matches = JSON.parse(getMatches.responseText);
 
 // Fetch pregenerated team data
 var getTeams = new XMLHttpRequest();
-getTeams.open('GET', 'data/teams.json', false);
+getTeams.open('GET', '/static/data/teams.json', false);
 getTeams.send();
 var teams = JSON.parse(getTeams.responseText);
 
 // Fetch pregenerated team stats
 var getStats = new XMLHttpRequest();
-getStats.open('GET', 'data/stats.json', false);
+getStats.open('GET', '/static/data/stats.json', false);
 getStats.send();
 var stats = JSON.parse(getStats.responseText);
 
