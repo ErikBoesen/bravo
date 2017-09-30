@@ -70,7 +70,6 @@ body {
 }
 #match svg {
     position: absolute;
-    bottom: -2px;
     left: 32vw;
     width: 500px;
 }
